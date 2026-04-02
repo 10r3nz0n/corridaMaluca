@@ -50,3 +50,5 @@ Ou então:
 
 O projeto foi mantido em um nível compatível com introdução a abstração e encapsulamento, sem exigir herança ou interfaces.
 O objetivo é exemplificar o pensamento de abstrações e sistema que o fluxo é executado pela troca de mensagens entre objetos.
+
+Vibe code.
