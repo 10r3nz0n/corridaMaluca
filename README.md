@@ -1,10 +1,11 @@
 # Corrida Maluca
 
-Projeto em Java com foco didático em orientação a objetos, encapsulamento e uso de `ArrayList`.
+Projeto em Java com foco didático em orientação a objetos, abstração, encapsulamento e uso de `ArrayList`.
+Uso de utilitários Menu, Video e Teclado.
 
-## O que foi adaptado
+## App
 
-A aplicação agora permite uso direto pelo usuário no console:
+A aplicação permite uso direto pelo usuário no console:
 
 - configurar a pista
 - cadastrar veículos manualmente
@@ -48,3 +49,4 @@ Ou então:
 ## Observação
 
 O projeto foi mantido em um nível compatível com introdução a abstração e encapsulamento, sem exigir herança ou interfaces.
+O objetivo é exemplificar o pensamento de abstrações e sistema que o fluxo é executado pela troca de mensagens entre objetos.
