@@ -1,54 +1,53 @@
 # Corrida Maluca
 
-Projeto em Java com foco didático em orientação a objetos, abstração, encapsulamento e uso de `ArrayList`.
-Uso de utilitários Menu, Video e Teclado.
+Projeto didático em Java com foco em orientação a objetos, encapsulamento, ArrayList e simulação de corrida no console.
 
-## App
+## O que esta versão tem
 
-A aplicação permite uso direto pelo usuário no console:
+- Cadastro de pista e veículos pelo usuário
+- Corrida simulada minuto a minuto
+- Classificação dinâmica por progresso total na pista
+- Pódio ao final da corrida
+- Falcatrua configurada em cada veículo
+- Recarga obrigatória entre usos de falcatrua
+- Efeitos ofensivos aleatórios entre os carros durante a corrida
 
-- configurar a pista
-- cadastrar veículos manualmente
-- listar veículos cadastrados
-- carregar um exemplo pronto
-- iniciar a corrida
+## Falcatruas disponíveis
 
-## Estrutura principal
+Cada veículo possui uma falcatrua fixa, configurada no cadastro:
 
-- `App.java`: fluxo principal da aplicação
-- `Pista.java`: controle da corrida
-- `Veiculo.java`: modelagem do carro
-- `menus/MenuPrincipal.java`: opções do sistema
-- `utilitarios/*`: leitura de teclado e exibição no console
+- `OLEO`: reduz a velocidade do alvo
+- `FUMACA`: aumenta o consumo do alvo
+- `BOMBA`: aplica uma penalidade forte de velocidade
+- `COLA`: reduz a aceleração do alvo por alguns minutos
+- `RAIO`: reduz temporariamente a velocidade máxima do alvo
+- `TURBO_SUJO`: melhora o atacante por pouco tempo e ainda atrapalha o alvo
+
+## Regras importantes
+
+- Apenas veículos ativos podem lançar falcatrua
+- Um veículo não pode lançar falcatrua em minutos seguidos
+- Depois de usar uma falcatrua, o carro entra em recarga
+- O acerto da falcatrua depende da chance configurada no veículo
+- Os efeitos são temporários e duram poucos minutos
+
+## Estrutura de classes
+
+- `App`: fluxo principal e interação com o usuário
+- `Pista`: controla a corrida, as posições e os eventos ofensivos
+- `Veiculo`: mantém estado, movimento, combustível e falcatrua
 
 ## Como executar
 
-Compile os arquivos fonte:
+Compile os arquivos da pasta `src` e execute a classe `App`.
+
+Exemplo com `javac` e `java`:
 
 ```bash
 javac -d bin src/*.java src/menus/*.java src/utilitarios/*.java
-```
-
-Execute a aplicação:
-
-```bash
 java -cp bin App
 ```
 
-## Fluxo sugerido
+## Observação didática
 
-1. Configurar nova pista
-2. Cadastrar pelo menos dois veículos
-3. Iniciar corrida
-
-Ou então:
-
-1. Carregar exemplo automático
-2. Iniciar corrida
-
-## Observação
-
-O projeto foi mantido em um nível compatível com introdução a abstração e encapsulamento, sem exigir herança ou interfaces.
-O objetivo é exemplificar o pensamento de abstrações e sistema que o fluxo é executado pela troca de mensagens entre objetos.
-
-Vibe code.
+A modelagem foi mantida simples para turmas que estudaram abstração e encapsulamento, sem depender de herança ou interfaces.

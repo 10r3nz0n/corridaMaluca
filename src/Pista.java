@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import utilitarios.Video;
+
 public class Pista {
 
     private String nome;
@@ -64,6 +66,10 @@ public class Pista {
     private void avancarUmMinuto() {
         tempoDecorridoMinutos++;
 
+        Video.exibirBarraProgresso(100, 20);
+
+        processarFalcatruasAleatorias();
+
         for (int i = 0; i < veiculos.size(); i++) {
             Veiculo veiculo = veiculos.get(i);
             veiculo.atualizarMinuto(tamanhoKm);
@@ -72,6 +78,96 @@ public class Pista {
         atualizarPosicoes();
         verificarFimDaCorrida();
         exibirParcialDoMinuto();
+    }
+
+    private void processarFalcatruasAleatorias() {
+        if (veiculos.size() < 2) {
+            return;
+        }
+
+        int chanceEvento = (int) (Math.random() * 100) + 1;
+        if (chanceEvento > 38) {
+            return;
+        }
+
+        Veiculo atacante = sortearVeiculoAtivoComFalcatruaDisponivel();
+        if (atacante == null) {
+            return;
+        }
+
+        Veiculo alvo = sortearOutroVeiculoAtivo(atacante);
+        if (alvo == null) {
+            return;
+        }
+
+        System.out.println();
+        System.out.println("*** EVENTO DE FALCATRUA ***");
+
+        if (atacante.falcatruaAcertou()) {
+            atacante.aplicarEfeitoFalcatruaNoAlvo(alvo);
+            atacante.iniciarRecargaFalcatrua();
+            exibirMensagemFalcatrua(atacante, alvo);
+        } else {
+            atacante.iniciarRecargaFalcatrua();
+            System.out.println(atacante.getNome() + " tentou usar "
+                    + atacante.getNomeFalcatruaFormatado()
+                    + " contra " + alvo.getNome() + ", mas falhou.");
+        }
+    }
+
+    private void exibirMensagemFalcatrua(Veiculo atacante, Veiculo alvo) {
+        String tipo = atacante.getTipoFalcatrua();
+
+        if (tipo.equals("OLEO")) {
+            System.out.println(atacante.getNome() + " lançou óleo na pista contra " + alvo.getNome() + ".");
+        } else if (tipo.equals("FUMACA")) {
+            System.out.println(atacante.getNome() + " soltou fumaça e prejudicou o consumo de " + alvo.getNome() + ".");
+        } else if (tipo.equals("BOMBA")) {
+            System.out.println(atacante.getNome() + " lançou uma bomba e abalou o motor de " + alvo.getNome() + ".");
+        } else if (tipo.equals("COLA")) {
+            System.out.println(
+                    atacante.getNome() + " espalhou cola na pista e travou a aceleração de " + alvo.getNome() + ".");
+        } else if (tipo.equals("RAIO")) {
+            System.out.println(atacante.getNome() + " disparou um raio desregulador contra " + alvo.getNome() + ".");
+        } else if (tipo.equals("TURBO_SUJO")) {
+            System.out.println(atacante.getNome() + " ativou um turbo sujo e ainda atrapalhou " + alvo.getNome() + ".");
+        }
+    }
+
+    private Veiculo sortearVeiculoAtivoComFalcatruaDisponivel() {
+        ArrayList<Veiculo> candidatos = new ArrayList<Veiculo>();
+
+        for (int i = 0; i < veiculos.size(); i++) {
+            Veiculo atual = veiculos.get(i);
+            if (atual.podeUsarFalcatrua()) {
+                candidatos.add(atual);
+            }
+        }
+
+        if (candidatos.isEmpty()) {
+            return null;
+        }
+
+        int indice = (int) (Math.random() * candidatos.size());
+        return candidatos.get(indice);
+    }
+
+    private Veiculo sortearOutroVeiculoAtivo(Veiculo atacante) {
+        ArrayList<Veiculo> candidatos = new ArrayList<Veiculo>();
+
+        for (int i = 0; i < veiculos.size(); i++) {
+            Veiculo atual = veiculos.get(i);
+            if (atual.isAtivo() && atual != atacante) {
+                candidatos.add(atual);
+            }
+        }
+
+        if (candidatos.isEmpty()) {
+            return null;
+        }
+
+        int indice = (int) (Math.random() * candidatos.size());
+        return candidatos.get(indice);
     }
 
     private void atualizarPosicoes() {
@@ -163,6 +259,7 @@ public class Pista {
         } else {
             for (int i = 0; i < veiculos.size(); i++) {
                 System.out.println(veiculos.get(i).gerarResumo());
+                System.out.println("   Falcatrua configurada: " + veiculos.get(i).getDescricaoFalcatrua());
             }
         }
         System.out.println("==============================================");

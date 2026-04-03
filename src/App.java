@@ -71,6 +71,10 @@ public class App {
         int potencia = lerIntPositivo("Potência do veículo:");
         double velocidadeMaxima = lerDoublePositivo("Velocidade máxima:");
         double zeroACem = lerDoublePositivo("Tempo de 0 a 100 km/h em segundos:");
+        String tipoFalcatrua = lerTipoFalcatrua();
+        int tempoRecarga = lerIntPositivo("Tempo de recarga da falcatrua em minutos:");
+        int intensidadeFalcatrua = lerIntPositivo("Intensidade da falcatrua:");
+        int chanceSucessoFalcatrua = lerIntIntervalo("Chance de sucesso da falcatrua (1 a 100):", 1, 100);
         int posicaoInicial = pista.getVeiculos().size() + 1;
 
         try {
@@ -82,13 +86,36 @@ public class App {
                 potencia,
                 velocidadeMaxima,
                 zeroACem,
-                posicaoInicial
+                posicaoInicial,
+                tipoFalcatrua,
+                tempoRecarga,
+                intensidadeFalcatrua,
+                chanceSucessoFalcatrua
             );
 
             pista.adicionarVeiculo(veiculo);
             Video.exibirMensagemOk("Veículo cadastrado com sucesso na posição " + posicaoInicial + ".");
         } catch (IllegalArgumentException e) {
             Video.exibirMensagemErro(e.getMessage());
+        }
+    }
+
+    private static String lerTipoFalcatrua() {
+        Video.exibirMensagemAlerta("Tipos de falcatrua disponíveis: OLEO, FUMACA, BOMBA, COLA, RAIO, TURBO_SUJO.");
+        while (true) {
+            String tipo = Teclado.string("Digite o tipo de falcatrua do veículo:");
+            if (tipo != null) {
+                String tipoMaiusculo = tipo.trim().toUpperCase();
+                if (tipoMaiusculo.equals("OLEO")
+                        || tipoMaiusculo.equals("FUMACA")
+                        || tipoMaiusculo.equals("BOMBA")
+                        || tipoMaiusculo.equals("COLA")
+                        || tipoMaiusculo.equals("RAIO")
+                        || tipoMaiusculo.equals("TURBO_SUJO")) {
+                    return tipoMaiusculo;
+                }
+            }
+            Video.exibirMensagemAlerta("Tipo inválido. Escolha um dos tipos apresentados.");
         }
     }
 
@@ -106,10 +133,10 @@ public class App {
 
     private static void carregarExemploAutomatico() {
         pista = new Pista("Autódromo Central", 5.0, 10);
-        pista.adicionarVeiculo(new Veiculo("Falcao GT", 50.0, 45.0, 8.0, 220, 210.0, 8.5, 1));
-        pista.adicionarVeiculo(new Veiculo("Trovao X", 55.0, 50.0, 7.5, 240, 220.0, 7.8, 2));
-        pista.adicionarVeiculo(new Veiculo("Vortex R", 48.0, 48.0, 9.0, 210, 205.0, 9.2, 3));
-        pista.adicionarVeiculo(new Veiculo("Cometa Z", 52.0, 46.0, 8.3, 230, 215.0, 8.0, 4));
+        pista.adicionarVeiculo(new Veiculo("Falcao GT", 50.0, 45.0, 8.0, 220, 210.0, 8.5, 1, "OLEO", 3, 12, 60));
+        pista.adicionarVeiculo(new Veiculo("Trovao X", 55.0, 50.0, 7.5, 240, 220.0, 7.8, 2, "BOMBA", 4, 18, 45));
+        pista.adicionarVeiculo(new Veiculo("Vortex R", 48.0, 48.0, 9.0, 210, 205.0, 9.2, 3, "FUMACA", 3, 10, 65));
+        pista.adicionarVeiculo(new Veiculo("Cometa Z", 52.0, 46.0, 8.3, 230, 215.0, 8.0, 4, "TURBO_SUJO", 5, 16, 50));
         Video.exibirMensagemOk("Exemplo carregado com sucesso.");
     }
 
@@ -147,6 +174,17 @@ public class App {
                 Video.exibirMensagemAlerta("Digite um valor inteiro maior que zero.");
             }
         } while (valor <= 0);
+        return valor;
+    }
+
+    private static int lerIntIntervalo(String mensagem, int minimo, int maximo) {
+        int valor;
+        do {
+            valor = Teclado.integer(mensagem);
+            if (valor < minimo || valor > maximo) {
+                Video.exibirMensagemAlerta("Digite um valor entre " + minimo + " e " + maximo + ".");
+            }
+        } while (valor < minimo || valor > maximo);
         return valor;
     }
 
